@@ -104,6 +104,11 @@ export function findClosestRem(
   baseFontSize: number,
   remScale: number[]
 ): number {
+  if (!remScale || remScale.length === 0) {
+    // If no scale provided, return the direct conversion
+    return pixelsToRem(pixels, baseFontSize);
+  }
+
   const targetRem = pixelsToRem(pixels, baseFontSize);
 
   return remScale.reduce((closest, current) => {

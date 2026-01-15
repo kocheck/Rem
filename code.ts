@@ -2,7 +2,7 @@
  * Main plugin code for Rem - Font Size Manager
  */
 
-import { recalculateFontSize, generateRemScale } from './utils/conversion';
+import { recalculateFontSize } from './utils/conversion';
 import {
   loadConfig,
   saveConfig,
@@ -336,15 +336,20 @@ async function handleLoadPreset(preset: PresetConfig) {
  */
 async function handleAddToProtectedList(nodeIds: string[]) {
   try {
+    const effectiveNodeIds =
+      nodeIds && nodeIds.length > 0
+        ? nodeIds
+        : figma.currentPage.selection.map(node => node.id);
+
     if (currentConfig.mode === 'exclude') {
       // Add to excluded list
       currentConfig.excludedNodeIds = [
-        ...new Set([...currentConfig.excludedNodeIds, ...nodeIds])
+        ...new Set([...currentConfig.excludedNodeIds, ...effectiveNodeIds])
       ];
     } else {
       // Add to included list
       currentConfig.includedNodeIds = [
-        ...new Set([...currentConfig.includedNodeIds, ...nodeIds])
+        ...new Set([...currentConfig.includedNodeIds, ...effectiveNodeIds])
       ];
     }
 

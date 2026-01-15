@@ -245,6 +245,11 @@ function handleSavePreset() {
   const input = document.getElementById('baseFontSize') as HTMLInputElement;
   const baseFontSize = parseFloat(input.value);
 
+  if (isNaN(baseFontSize) || baseFontSize < 8 || baseFontSize > 32) {
+    showAlert('error', 'Base font size must be between 8 and 32.');
+    return;
+  }
+
   const remValuesInput = document.getElementById(
     'customRemValues'
   ) as HTMLInputElement;

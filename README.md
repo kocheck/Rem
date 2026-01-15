@@ -206,7 +206,7 @@ rem-plugin/
 
 ### Testing
 
-The plugin has comprehensive test coverage (80%+):
+The plugin has comprehensive automated tests with coverage reporting:
 
 ```bash
 # Run all tests
@@ -348,8 +348,8 @@ Created with ❤️ for the Figma community
 
 ## Support
 
-- Report issues: [GitHub Issues](https://github.com/your-repo/issues)
-- Ask questions: [Discussions](https://github.com/your-repo/discussions)
+- Report issues: [GitHub Issues](https://github.com/kocheck/Rem/issues)
+- Ask questions: [Discussions](https://github.com/kocheck/Rem/discussions)
 
 ## Changelog
 
