@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Rem - Font Size Manager</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--figma-color-text);
+      background: var(--figma-color-bg);
+      padding: 16px;
+    }
+
+    .container {
+      max-width: 100%;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 16px;
+    }
+
+    .header h1 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .header p {
+      font-size: 11px;
+      color: var(--figma-color-text-secondary);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--figma-color-border);
+    }
+
+    .tab {
+      padding: 8px 12px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--figma-color-text-secondary);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .tab:hover {
+      color: var(--figma-color-text);
+    }
+
+    .tab.active {
+      color: var(--figma-color-text);
+      border-bottom-color: var(--figma-color-bg-brand);
+    }
+
+    /* Tab content */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Form elements */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--figma-color-text-secondary);
+    }
+
+    .input-wrapper {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    input[type="number"],
+    input[type="text"] {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid var(--figma-color-border);
+      border-radius: 4px;
+      background: var(--figma-color-bg);
+      color: var(--figma-color-text);
+      font-size: 12px;
+      font-family: inherit;
+    }
+
+    input:focus {
+      outline: 2px solid var(--figma-color-bg-brand);
+      outline-offset: -1px;
+    }
+
+    /* Toggle switch */
+    .toggle-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .toggle-button {
+      flex: 1;
+      padding: 8px 12px;
+      background: var(--figma-color-bg-secondary);
+      border: 1px solid var(--figma-color-border);
+      border-radius: 4px;
+      color: var(--figma-color-text);
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 500;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .toggle-button:hover {
+      background: var(--figma-color-bg-hover);
+    }
+
+    .toggle-button.active {
+      background: var(--figma-color-bg-brand);
+      border-color: var(--figma-color-bg-brand);
+      color: white;
+    }
+
+    /* Button */
+    .button {
+      padding: 10px 16px;
+      background: var(--figma-color-bg-brand);
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      width: 100%;
+      transition: opacity 0.2s;
+    }
+
+    .button:hover {
+      opacity: 0.9;
+    }
+
+    .button:active {
+      opacity: 0.8;
+    }
+
+    .button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .button-secondary {
+      background: var(--figma-color-bg-secondary);
+      color: var(--figma-color-text);
+      border: 1px solid var(--figma-color-border);
+    }
+
+    .button-small {
+      padding: 6px 12px;
+      font-size: 11px;
+      width: auto;
+    }
+
+    .button-danger {
+      background: #f24822;
+    }
+
+    /* Preview section */
+    .preview {
+      padding: 16px;
+      background: var(--figma-color-bg-secondary);
+      border-radius: 6px;
+      margin-bottom: 16px;
+    }
+
+    .preview h3 {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .preview-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+    }
+
+    .stat-label {
+      color: var(--figma-color-text-secondary);
+    }
+
+    .stat-value {
+      font-weight: 600;
+    }
+
+    /* Detection result */
+    .detection-result {
+      padding: 16px;
+      background: var(--figma-color-bg-secondary);
+      border-radius: 6px;
+      margin-top: 16px;
+    }
+
+    .confidence {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .confidence-bar {
+      flex: 1;
+      height: 6px;
+      background: var(--figma-color-bg);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .confidence-fill {
+      height: 100%;
+      background: var(--figma-color-bg-brand);
+      transition: width 0.3s;
+    }
+
+    .confidence-fill.low {
+      background: #f24822;
+    }
+
+    .confidence-fill.medium {
+      background: #ffaa00;
+    }
+
+    .confidence-fill.high {
+      background: #0fa958;
+    }
+
+    .analysis-text {
+      font-size: 11px;
+      color: var(--figma-color-text-secondary);
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+
+    /* List */
+    .list {
+      list-style: none;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .list-item {
+      padding: 12px;
+      background: var(--figma-color-bg-secondary);
+      border-radius: 4px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .list-item-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .list-item-title {
+      font-weight: 600;
+      font-size: 12px;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .list-item-description {
+      font-size: 11px;
+      color: var(--figma-color-text-secondary);
+    }
+
+    .list-item-actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--figma-color-text-secondary);
+    }
+
+    .empty-state-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+      opacity: 0.5;
+    }
+
+    .empty-state-text {
+      font-size: 11px;
+    }
+
+    /* Alert */
+    .alert {
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 16px;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .alert-info {
+      background: rgba(24, 160, 251, 0.1);
+      color: #18a0fb;
+      border: 1px solid rgba(24, 160, 251, 0.3);
+    }
+
+    .alert-success {
+      background: rgba(15, 169, 88, 0.1);
+      color: #0fa958;
+      border: 1px solid rgba(15, 169, 88, 0.3);
+    }
+
+    .alert-error {
+      background: rgba(242, 72, 34, 0.1);
+      color: #f24822;
+      border: 1px solid rgba(242, 72, 34, 0.3);
+    }
+
+    /* History */
+    .history-entry {
+      padding: 12px;
+      background: var(--figma-color-bg-secondary);
+      border-radius: 4px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .history-entry:hover {
+      background: var(--figma-color-bg-hover);
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .history-title {
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .history-time {
+      font-size: 10px;
+      color: var(--figma-color-text-secondary);
+    }
+
+    .history-stats {
+      font-size: 11px;
+      color: var(--figma-color-text-secondary);
+    }
+
+    .history-changes {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s;
+    }
+
+    .history-entry.expanded .history-changes {
+      max-height: 500px;
+      margin-top: 12px;
+    }
+
+    .change-item {
+      padding: 8px;
+      background: var(--figma-color-bg);
+      border-radius: 3px;
+      margin-bottom: 4px;
+      font-size: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Loading */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      color: var(--figma-color-text-secondary);
+    }
+
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 3px solid var(--figma-color-border);
+      border-top-color: var(--figma-color-bg-brand);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--figma-color-bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--figma-color-border);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--figma-color-text-tertiary);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>Rem - Font Size Manager</h1>
+      <p>Manage font sizes using a rem-based system</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-tab="main">Main</button>
+      <button class="tab" data-tab="settings">Settings</button>
+      <button class="tab" data-tab="presets">Presets</button>
+      <button class="tab" data-tab="history">History</button>
+      <button class="tab" data-tab="protected">Protected</button>
+    </div>
+
+    <!-- Main Tab -->
+    <div class="tab-content active" id="tab-main">
+      <!-- Mode Toggle -->
+      <div class="form-group">
+        <label>Update Mode</label>
+        <div class="toggle-group">
+          <button class="toggle-button active" data-mode="page">Current Page</button>
+          <button class="toggle-button" data-mode="selection">Selection Only</button>
+        </div>
+      </div>
+
+      <!-- Base Font Size -->
+      <div class="form-group">
+        <label>Base Font Size</label>
+        <div class="input-wrapper">
+          <input type="number" id="baseFontSize" min="8" max="32" step="0.5" value="16">
+          <span>px</span>
+        </div>
+      </div>
+
+      <!-- Smart Detect Button -->
+      <button class="button button-secondary" id="smartDetectBtn">
+        Smart Detect
+      </button>
+
+      <!-- Detection Result -->
+      <div id="detectionResult" style="display: none;"></div>
+
+      <!-- Preview -->
+      <div class="preview">
+        <h3>Preview</h3>
+        <div class="preview-stats">
+          <div class="stat-row">
+            <span class="stat-label">Total text elements:</span>
+            <span class="stat-value" id="totalCount">-</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Will be updated:</span>
+            <span class="stat-value" id="updateCount">-</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Using variables:</span>
+            <span class="stat-value" id="variableCount">-</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Locked:</span>
+            <span class="stat-value" id="lockedCount">-</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Protected:</span>
+            <span class="stat-value" id="protectedCount">-</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Apply Button -->
+      <button class="button" id="applyBtn">Apply Changes</button>
+    </div>
+
+    <!-- Settings Tab -->
+    <div class="tab-content" id="tab-settings">
+      <div class="form-group">
+        <label>Mode</label>
+        <div class="toggle-group">
+          <button class="toggle-button active" data-setting-mode="exclude">Exclude Mode</button>
+          <button class="toggle-button" data-setting-mode="includeOnly">Include Only Mode</button>
+        </div>
+        <p class="alert alert-info" id="modeDescription">
+          Exclude Mode: Update all text elements except those in the protected list.
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label>Custom Rem Values</label>
+        <input type="text" id="customRemValues" placeholder="0.75, 1, 1.5, 2, 3">
+        <p style="font-size: 10px; color: var(--figma-color-text-secondary); margin-top: 4px;">
+          Comma-separated rem values for your type scale
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label>Layer Name Patterns</label>
+        <input type="text" id="layerPatterns" placeholder="Logo*, Header*, Footer*">
+        <p style="font-size: 10px; color: var(--figma-color-text-secondary); margin-top: 4px;">
+          Use * as wildcard. Applies based on current mode (exclude or include only).
+        </p>
+      </div>
+
+      <button class="button" id="saveSettingsBtn">Save Settings</button>
+    </div>
+
+    <!-- Presets Tab -->
+    <div class="tab-content" id="tab-presets">
+      <div class="form-group">
+        <button class="button button-secondary" id="savePresetBtn">Save Current as Preset</button>
+      </div>
+
+      <div class="form-group">
+        <label>Built-in Presets</label>
+        <ul class="list" id="builtInPresetsList"></ul>
+      </div>
+
+      <div class="form-group">
+        <label>Custom Presets</label>
+        <ul class="list" id="customPresetsList"></ul>
+        <div class="empty-state" id="noPresetsState">
+          <div class="empty-state-icon">📦</div>
+          <div class="empty-state-text">No custom presets saved yet</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- History Tab -->
+    <div class="tab-content" id="tab-history">
+      <div class="form-group">
+        <button class="button button-secondary button-small" id="exportHistoryBtn">Export Report</button>
+      </div>
+
+      <ul class="list" id="historyList"></ul>
+      <div class="empty-state" id="noHistoryState">
+        <div class="empty-state-icon">📊</div>
+        <div class="empty-state-text">No changes made yet</div>
+      </div>
+    </div>
+
+    <!-- Protected Elements Tab -->
+    <div class="tab-content" id="tab-protected">
+      <div class="alert alert-info" id="protectedModeInfo">
+        Current mode: <strong>Exclude Mode</strong><br>
+        Elements in this list will be skipped during updates.
+      </div>
+
+      <div class="form-group">
+        <button class="button button-secondary" id="addSelectionBtn">Add Current Selection</button>
+      </div>
+
+      <div class="form-group">
+        <label>Protected Nodes</label>
+        <ul class="list" id="protectedNodesList"></ul>
+        <div class="empty-state" id="noProtectedState">
+          <div class="empty-state-icon">🛡️</div>
+          <div class="empty-state-text">No protected elements</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Layer Name Patterns</label>
+        <div id="patternsList"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="dist/ui.js"></script>
+</body>
+</html>
