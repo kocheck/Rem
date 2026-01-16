@@ -1,0 +1,17 @@
+{
+  "name": "Material Design",
+  "description": "Material Design type scale following Google's design system",
+  "baseFontSize": 16,
+  "customRemValues": [
+    0.75,
+    0.875,
+    1,
+    1.25,
+    1.5,
+    2,
+    2.5,
+    3,
+    4,
+    5
+  ]
+}

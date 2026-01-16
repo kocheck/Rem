@@ -1,0 +1,13 @@
+{
+  "name": "Golden Ratio",
+  "description": "Type scale based on the golden ratio (1.618)",
+  "baseFontSize": 16,
+  "customRemValues": [
+    0.382,
+    0.618,
+    1,
+    1.618,
+    2.618,
+    4.236
+  ]
+}

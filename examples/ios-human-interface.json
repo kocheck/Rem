@@ -1,0 +1,16 @@
+{
+  "name": "iOS Human Interface",
+  "description": "iOS dynamic type scale for accessible typography",
+  "baseFontSize": 17,
+  "customRemValues": [
+    0.706,
+    0.824,
+    0.941,
+    1,
+    1.118,
+    1.294,
+    1.412,
+    1.647,
+    1.882
+  ]
+}

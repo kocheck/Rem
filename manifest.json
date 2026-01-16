@@ -1,0 +1,21 @@
+{
+  "name": "Rem",
+  "id": "rem-font-size-manager",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "capabilities": [],
+  "enableProposedApi": false,
+  "editorType": [
+    "figma"
+  ],
+  "ui": "ui.html",
+  "networkAccess": {
+    "allowedDomains": [
+      "none"
+    ]
+  },
+  "permissions": [
+    "currentuser"
+  ],
+  "documentAccess": "dynamic-page"
+}
