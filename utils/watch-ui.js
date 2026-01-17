@@ -13,9 +13,10 @@ try {
   console.error('Initial build failed:', error);
 }
 
-// Watch for changes
-fs.watch(path.dirname(UI_JS_PATH), (eventType, filename) => {
-  if (filename === 'ui.js') {
+// Watch for changes using fs.watchFile for better reliability
+fs.watchFile(UI_JS_PATH, { interval: 500 }, (curr, prev) => {
+  // Check if modification time changed
+  if (curr.mtime !== prev.mtime) {
     console.log('ui.js changed, rebuilding ui.html...');
     try {
       execSync('node utils/build-ui.js', { stdio: 'inherit' });
@@ -24,3 +25,5 @@ fs.watch(path.dirname(UI_JS_PATH), (eventType, filename) => {
     }
   }
 });
+
+console.log('Press Ctrl+C to stop watching...');
