@@ -5,7 +5,7 @@
   "main": "code.js",
   "scripts": {
     "build": "tsc --noEmit && esbuild code.ts --bundle --outfile=dist/code.js --platform=neutral --target=es2017 && esbuild ui.ts --bundle --outfile=dist/ui.js --target=es2017 && node utils/build-ui.js",
-    "watch": "concurrently \"tsc --watch\" \"esbuild ui.ts --bundle --outfile=dist/ui.js --watch\"",
+    "watch": "concurrently \"tsc --watch\" \"esbuild ui.ts --bundle --outfile=dist/ui.js --watch\" \"node utils/watch-ui.js\"",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"

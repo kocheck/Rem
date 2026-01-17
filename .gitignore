@@ -8,3 +8,4 @@ coverage/
 *.d.ts
 !jest.config.js
 !utils/build-ui.js
+!utils/watch-ui.js

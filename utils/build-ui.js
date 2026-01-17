@@ -24,7 +24,23 @@ try {
     // Fallback: append to body if tag not found (though it should be there)
     // Also handle the debug script we added
     console.warn('Could not find <script src="dist/ui.js"></script>, appending script to body.');
-    html = html.replace('</body>', `<script>\n${js}\n</script>\n</body>`);
+    
+    const bodyCloseTag = '</body>';
+    const bodyTagMatches = html.match(/<\/body>/gi) || [];
+    if (bodyTagMatches.length > 1) {
+      console.warn(`Warning: Found ${bodyTagMatches.length} occurrences of "</body>" in ui.html. Inlining script before the last occurrence.`);
+    }
+
+    const lastBodyIndex = html.lastIndexOf(bodyCloseTag);
+    if (lastBodyIndex === -1) {
+      console.warn('No </body> tag found in ui.html; appending script at end of file.');
+      html = `${html}\n<script>\n${js}\n</script>\n`;
+    } else {
+      html =
+        html.slice(0, lastBodyIndex) +
+        `<script>\n${js}\n</script>\n` +
+        html.slice(lastBodyIndex);
+    }
   }
 
   // Write the new HTML file to dist
