@@ -785,9 +785,11 @@ try {
   errDiv.textContent = 'Init Error: ' + error;
   errDiv.style.color = 'red';
   if (document.body) {
-    if (typeof (document.body as any).prepend === 'function') {
+    // Use prepend if available, otherwise fallback to appendChild
+    try {
       document.body.prepend(errDiv);
-    } else {
+    } catch (e) {
+      // Fallback for browsers that don't support prepend
       document.body.appendChild(errDiv);
     }
   } else {

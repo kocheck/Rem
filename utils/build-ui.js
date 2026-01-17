@@ -26,7 +26,7 @@ try {
     console.warn('Could not find <script src="dist/ui.js"></script>, appending script to body.');
     
     const bodyCloseTag = '</body>';
-    const bodyTagMatches = html.match(new RegExp(bodyCloseTag, 'gi')) || [];
+    const bodyTagMatches = html.match(/<\/body>/gi) || [];
     if (bodyTagMatches.length > 1) {
       console.warn(`Warning: Found ${bodyTagMatches.length} occurrences of "</body>" in ui.html. Inlining script before the last occurrence.`);
     }
