@@ -631,7 +631,16 @@
       const alert = document.createElement('div');
       alert.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; background: #f24822; color: white; padding: 12px; z-index: 9999; font-size: 11px;';
       alert.textContent = 'UI Error: ' + message;
-      document.body.appendChild(alert);
+      if (document.body) {
+        document.body.appendChild(alert);
+      } else {
+        document.addEventListener('DOMContentLoaded', function onDomContentLoaded() {
+          document.removeEventListener('DOMContentLoaded', onDomContentLoaded);
+          if (document.body) {
+            document.body.appendChild(alert);
+          }
+        });
+      }
     };
     console.log('UI HTML loaded, waiting for script...');
   </script>

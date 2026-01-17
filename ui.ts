@@ -780,9 +780,18 @@ try {
   }
 } catch (error) {
   console.error('Failed to initialize UI:', error);
-  // Ensure we can see this error
+  // Ensure we can see this error without throwing from the handler itself
   const errDiv = document.createElement('div');
   errDiv.textContent = 'Init Error: ' + error;
   errDiv.style.color = 'red';
-  document.body.prepend(errDiv);
+  if (document.body) {
+    if (typeof (document.body as any).prepend === 'function') {
+      document.body.prepend(errDiv);
+    } else {
+      document.body.appendChild(errDiv);
+    }
+  } else {
+    // Fallback when body is not yet available
+    console.error(errDiv.textContent);
+  }
 }
