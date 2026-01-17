@@ -6,7 +6,7 @@
 let currentConfig: any = null;
 let customPresets: any[] = [];
 let builtInPresets: any[] = [];
-let history: any[] = [];
+let pluginHistory: any[] = [];
 
 /**
  * Initialize UI event listeners
@@ -310,7 +310,7 @@ function generateHistoryReport(): string {
   let report = '# Rem Plugin - Change History\n\n';
   report += `Generated: ${new Date().toLocaleString()}\n\n`;
 
-  for (const entry of history) {
+  for (const entry of pluginHistory) {
     const date = new Date(entry.timestamp).toLocaleString();
     report += `## ${date}\n\n`;
     report += `- Base font size changed: ${entry.baseFontSize.old}px → ${entry.baseFontSize.new}px\n`;
@@ -532,15 +532,15 @@ function renderHistory() {
   const historyList = document.getElementById('historyList');
   const noHistoryState = document.getElementById('noHistoryState');
 
-  if (history.length === 0) {
+  if (pluginHistory.length === 0) {
     if (historyList) historyList.style.display = 'none';
     if (noHistoryState) noHistoryState.style.display = 'block';
   } else {
     if (historyList) {
       historyList.style.display = 'block';
-      historyList.innerHTML = history
+      historyList.innerHTML = pluginHistory
         .map(
-          (entry, index) => `
+          (entry: any, index: number) => `
         <li class="history-entry" onclick="toggleHistoryEntry(${index})">
           <div class="history-header">
             <span class="history-title">${entry.baseFontSize.old}px → ${entry.baseFontSize.new}px</span>
@@ -553,7 +553,7 @@ function renderHistory() {
             ${entry.changes
               .slice(0, 20)
               .map(
-                change => `
+                (change: any) => `
               <div class="change-item">
                 <span>${change.nodeName}</span>
                 <span>${change.oldSize}px → ${change.newSize}px</span>
@@ -602,7 +602,7 @@ function renderProtectedElements() {
       nodesList.style.display = 'block';
       nodesList.innerHTML = nodeIds
         .map(
-          nodeId => `
+          (nodeId: string) => `
         <li class="list-item">
           <div class="list-item-content">
             <div class="list-item-title">${nodeId}</div>
@@ -631,7 +631,7 @@ function renderProtectedElements() {
         '<p style="font-size: 11px; color: var(--figma-color-text-secondary);">No patterns defined. Add them in Settings tab.</p>';
     } else {
       patternsList.innerHTML = patterns
-        .map(pattern => `<div class="list-item"><div class="list-item-title">${pattern}</div></div>`)
+        .map((pattern: string) => `<div class="list-item"><div class="list-item-title">${pattern}</div></div>`)
         .join('');
     }
   }
@@ -664,7 +664,7 @@ window.onmessage = (event) => {
       currentConfig = msg.config;
       customPresets = msg.presets;
       builtInPresets = msg.builtInPresets;
-      history = msg.history;
+      pluginHistory = msg.history;
 
       // Update UI
       const baseFontSizeInput = document.getElementById(
@@ -720,7 +720,7 @@ window.onmessage = (event) => {
         'success',
         `Successfully updated ${msg.result.textNodesUpdated} text nodes!`
       );
-      history.unshift(msg.historyEntry);
+      pluginHistory.unshift(msg.historyEntry);
       renderHistory();
       break;
 
@@ -767,4 +767,22 @@ window.onmessage = (event) => {
 };
 
 // Initialize
-initializeEventListeners();
+console.log('UI script loaded, initializing...');
+try {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM ready, starting listeners...');
+      initializeEventListeners();
+    });
+  } else {
+    console.log('DOM already ready, starting listeners...');
+    initializeEventListeners();
+  }
+} catch (error) {
+  console.error('Failed to initialize UI:', error);
+  // Ensure we can see this error
+  const errDiv = document.createElement('div');
+  errDiv.textContent = 'Init Error: ' + error;
+  errDiv.style.color = 'red';
+  document.body.prepend(errDiv);
+}
