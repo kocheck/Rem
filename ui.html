@@ -624,6 +624,17 @@
     </div>
   </div>
 
+  <script>
+    window.onerror = function(message, source, lineno, colno, error) {
+      console.error('Global UI Error:', message, error);
+      // Create a visible alert on the UI
+      const alert = document.createElement('div');
+      alert.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; background: #f24822; color: white; padding: 12px; z-index: 9999; font-size: 11px;';
+      alert.textContent = 'UI Error: ' + message;
+      document.body.appendChild(alert);
+    };
+    console.log('UI HTML loaded, waiting for script...');
+  </script>
   <script src="dist/ui.js"></script>
 </body>
 </html>

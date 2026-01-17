@@ -4,7 +4,7 @@
   "description": "A Figma plugin that manages font sizes across designs using a rem-based system",
   "main": "code.js",
   "scripts": {
-    "build": "tsc && esbuild ui.ts --bundle --outfile=dist/ui.js",
+    "build": "tsc --noEmit && esbuild code.ts --bundle --outfile=dist/code.js --platform=neutral --target=es2017 && esbuild ui.ts --bundle --outfile=dist/ui.js --target=es2017 && node utils/build-ui.js",
     "watch": "concurrently \"tsc --watch\" \"esbuild ui.ts --bundle --outfile=dist/ui.js --watch\"",
     "test": "jest",
     "test:watch": "jest --watch",

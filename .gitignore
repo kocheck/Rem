@@ -7,3 +7,4 @@ coverage/
 *.js.map
 *.d.ts
 !jest.config.js
+!utils/build-ui.js
